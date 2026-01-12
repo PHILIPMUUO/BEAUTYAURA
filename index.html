@@ -1121,10 +1121,33 @@
             cursor: pointer;
             font-weight: bold;
             transition: background-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Ripple effect for submit button */
+        .btn-submit::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .btn-submit:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
         }
 
         .btn-submit:hover {
             background-color: #303f9f;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .btn-cancel {
@@ -1248,6 +1271,21 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 1;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
             }
         }
 
@@ -1760,7 +1798,7 @@
                                 <div class="icon-option" data-icon="fas fa-moon"><i class="fas fa-moon"></i></div>
                                 <div class="icon-option" data-icon="fas fa-cloud"><i class="fas fa-cloud"></i></div>
                                 <div class="icon-option" data-icon="fas fa-leaf"><i class="fas fa-leaf"></i></div>
-                                <div class="icon-option" data-icon="fas fa-flower"><i class="fas fa-seedling"></i></div>
+                                <div class="icon-option" data-icon="fas fa-seedling"><i class="fas fa-seedling"></i></div>
                                 <div class="icon-option" data-icon="fas fa-fire"><i class="fas fa-fire"></i></div>
                                 <div class="icon-option" data-icon="fas fa-water"><i class="fas fa-water"></i></div>
                                 <div class="icon-option" data-icon="fas fa-snowflake"><i class="fas fa-snowflake"></i></div>
@@ -1956,6 +1994,9 @@
             updateFooterYear();
             initializeAdminData();
             setupIconSelector();
+            
+            // Immediately sync the dropdown on load
+            populateCategoryDropdown();
         }
 
         // Update footer year
@@ -2022,8 +2063,30 @@
                         tab.classList.add('active');
                         renderProducts(category);
                         document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        // If the filter tab doesn't exist (custom category), just show all or filter via logic
+                        // For this implementation, we will just show products filtered by name directly
+                        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                        document.querySelector('.filter-tab[data-filter="all"]').classList.add('active');
+                        renderProductsDirectly(category);
                     }
                 });
+            });
+        }
+
+        // Helper to render products by category name directly if tab doesn't exist
+        function renderProductsDirectly(categoryName) {
+            const products = getLocalStorageData('beautyaura_products');
+            const filteredProducts = products.filter(product => product.category === categoryName);
+            productGrid.innerHTML = '';
+            
+            if (filteredProducts.length === 0) {
+                productGrid.innerHTML = '<div class="empty-state"><p>No products available in this category</p></div>';
+                return;
+            }
+            
+            filteredProducts.forEach(product => {
+                createProductCard(product);
             });
         }
 
@@ -2042,42 +2105,42 @@
             }
             
             filteredProducts.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card';
-                productCard.innerHTML = `
-                    <div class="product-img">
-                        <img src="${product.image}" alt="${product.name}">
-                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-                        <div class="product-actions">
-                            <button class="action-btn" data-id="${product.id}" data-action="quickview">
-                                <i class="far fa-eye"></i>
-                            </button>
-                            <button class="action-btn" data-id="${product.id}" data-action="wishlist">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="action-btn" data-id="${product.id}" data-action="addtocart">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
+                createProductCard(product);
+            });
+        }
+        
+        // Separate function to create card HTML for reuse
+        function createProductCard(product) {
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.innerHTML = `
+                <div class="product-img">
+                    <img src="${product.image}" alt="${product.name}">
+                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                    <div class="product-actions">
+                        <button class="action-btn" data-id="${product.id}" data-action="quickview">
+                            <i class="far fa-eye"></i>
+                        </button>
+                        <button class="action-btn" data-id="${product.id}" data-action="wishlist">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="action-btn" data-id="${product.id}" data-action="addtocart">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">${product.category}</div>
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-price">
+                        <div>
+                            <span class="price">KSh ${product.price}</span>
+                            ${product.oldPrice ? `<span class="old-price">KSh ${product.oldPrice}</span>` : ''}
                         </div>
                     </div>
-                    <div class="product-info">
-                        <div class="product-category">${product.category}</div>
-                        <div class="product-name">${product.name}</div>
-                        <div class="product-price">
-                            <div>
-                                <span class="price">KSh ${product.price}</span>
-                                ${product.oldPrice ? `<span class="old-price">KSh ${product.oldPrice}</span>` : ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                productGrid.appendChild(productCard);
-            });
-
-            // Add event listeners to product action buttons
-            document.querySelectorAll('.action-btn').forEach(btn => {
-                btn.addEventListener('click', handleProductAction);
-            });
+                </div>
+            `;
+            productGrid.appendChild(productCard);
         }
 
         // Handle product actions
@@ -2228,8 +2291,9 @@
         }
 
         // Show toast notification
-        function showToast(message) {
+        function showToast(message, isError = false) {
             toast.textContent = message;
+            toast.style.backgroundColor = isError ? 'var(--danger-color)' : 'var(--success-color)';
             toast.classList.add('show');
             
             setTimeout(() => {
@@ -2249,7 +2313,7 @@
             updateAccountList();
             updateTransactionList();
             updateRecentOrders();
-            populateCategoryDropdown();
+            // Initial population of dropdown is handled in init()
         }
 
         // Update dashboard stats
@@ -2714,6 +2778,10 @@
         function populateCategoryDropdown() {
             const categories = getLocalStorageData('beautyaura_categories');
             const productCategory = document.getElementById('productCategory');
+            
+            // Save the currently selected value if it exists
+            const currentSelection = productCategory.value;
+            
             productCategory.innerHTML = '<option value="">Select Category</option>';
             
             categories.forEach(category => {
@@ -2722,6 +2790,14 @@
                 option.textContent = category.name;
                 productCategory.appendChild(option);
             });
+            
+            // Restore selection if it still exists in the new list
+            if (currentSelection) {
+                const exists = Array.from(productCategory.options).some(option => option.value === currentSelection);
+                if (exists) {
+                    productCategory.value = currentSelection;
+                }
+            }
         }
 
         // View product
@@ -2742,6 +2818,9 @@
             const product = products.find(p => p.id === id);
             
             if (product) {
+                // Ensure dropdown is up to date before setting value
+                populateCategoryDropdown();
+                
                 document.getElementById('productId').value = product.id;
                 document.getElementById('productName').value = product.name;
                 document.getElementById('productCategory').value = product.category;
@@ -2853,6 +2932,7 @@
                 
                 updateCategoryList();
                 renderCategories();
+                // Sync dropdown
                 populateCategoryDropdown();
                 showToast('Category deleted successfully');
             }
@@ -2942,36 +3022,7 @@
                     if (filteredProducts.length > 0) {
                         productGrid.innerHTML = '';
                         filteredProducts.forEach(product => {
-                            const productCard = document.createElement('div');
-                            productCard.className = 'product-card';
-                            productCard.innerHTML = `
-                                <div class="product-img">
-                                    <img src="${product.image}" alt="${product.name}">
-                                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-                                    <div class="product-actions">
-                                        <button class="action-btn" data-id="${product.id}" data-action="quickview">
-                                            <i class="far fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn" data-id="${product.id}" data-action="wishlist">
-                                            <i class="far fa-heart"></i>
-                                        </button>
-                                        <button class="action-btn" data-id="${product.id}" data-action="addtocart">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <div class="product-category">${product.category}</div>
-                                    <div class="product-name">${product.name}</div>
-                                    <div class="product-price">
-                                        <div>
-                                            <span class="price">KSh ${product.price}</span>
-                                            ${product.oldPrice ? `<span class="old-price">KSh ${product.oldPrice}</span>` : ''}
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            productGrid.appendChild(productCard);
+                            createProductCard(product);
                         });
                         
                         // Add event listeners to product action buttons
@@ -2982,7 +3033,7 @@
                         document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
                         showToast(`Found ${filteredProducts.length} products for "${searchTerm}"`);
                     } else {
-                        showToast(`No products found for "${searchTerm}"`);
+                        showToast(`No products found for "${searchTerm}"`, true);
                     }
                 }
             }
@@ -3106,8 +3157,11 @@
                     adminLogin.classList.remove('active');
                     adminDashboard.classList.add('active');
                     showToast('Login successful!');
+                    // Refresh data on login
+                    initializeAdminData();
+                    populateCategoryDropdown();
                 } else {
-                    showToast('Invalid username or password');
+                    showToast('Invalid username or password', true);
                 }
                 
                 loginForm.reset();
@@ -3148,8 +3202,11 @@
                 const products = getLocalStorageData('beautyaura_products');
                 const category = document.getElementById('productCategory').value;
                 
+                // Validation: Ensure category is selected
                 if (!category) {
-                    showToast('Please select a category');
+                    showToast('Please select a category for the product', true);
+                    // Highlight the category dropdown
+                    document.getElementById('productCategory').focus();
                     return;
                 }
                 
@@ -3192,6 +3249,7 @@
                 document.getElementById('productFormTitle').textContent = 'Add New Product';
                 document.getElementById('productSubmitBtn').textContent = 'Add Product';
                 
+                // Refresh Product List and Client View
                 updateProductList();
                 updateDashboardStats();
                 updateStockList();
@@ -3211,7 +3269,7 @@
                 e.preventDefault();
                 
                 if (!selectedIcon) {
-                    showToast('Please select an icon');
+                    showToast('Please select an icon', true);
                     return;
                 }
                 
@@ -3255,6 +3313,7 @@
                     opt.classList.remove('selected');
                 });
                 
+                // Sync everything
                 updateCategoryList();
                 renderCategories();
                 populateCategoryDropdown();
