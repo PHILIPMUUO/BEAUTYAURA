@@ -14,6 +14,7 @@
         }
 
         :root {
+            /* Original BeautyAura Theme (Pink/Red) */
             --primary-color: #e91e63;
             --secondary-color: #f8bbd0;
             --accent-color: #333;
@@ -483,6 +484,31 @@
             font-size: 14px;
         }
 
+        /* Content Sections (About, Contact, etc) */
+        .content-section {
+            padding: 60px 0;
+        }
+        .content-section.white-bg {
+            background-color: white;
+        }
+        .content-section.gray-bg {
+            background-color: var(--light-color);
+        }
+        
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .content-wrapper img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
         /* Newsletter Section */
         .newsletter {
             background-color: var(--primary-color);
@@ -863,7 +889,7 @@
         }
 
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: var(--admin-color);
+            border-color: var(--primary-color);
         }
 
         .login-btn {
@@ -974,7 +1000,7 @@
 
         .admin-topbar h3 {
             margin: 0;
-            color: var(--admin-color);
+            color: var(--primary-color);
         }
 
         .logout-btn {
@@ -1121,33 +1147,10 @@
             cursor: pointer;
             font-weight: bold;
             transition: background-color 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Ripple effect for submit button */
-        .btn-submit::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-
-        .btn-submit:focus:not(:active)::after {
-            animation: ripple 1s ease-out;
         }
 
         .btn-submit:hover {
             background-color: #303f9f;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .btn-cancel {
@@ -1244,49 +1247,18 @@
 
         /* Animations */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 1;
-            }
-            20% {
-                transform: scale(25, 25);
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: scale(40, 40);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Responsive Styles */
@@ -1457,9 +1429,9 @@
         <nav>
             <div class="container">
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="#" data-link="home">Home</a></li>
                     <li>
-                        <a href="#">Shop</a>
+                        <a href="#" data-link="shop">Shop</a>
                         <div class="dropdown">
                             <a href="#" data-category="all">All Products</a>
                             <a href="#" data-category="skincare">Skincare</a>
@@ -1469,53 +1441,86 @@
                             <a href="#" data-category="tools">Beauty Tools</a>
                         </div>
                     </li>
-                    <li><a href="#">New Arrivals</a></li>
-                    <li><a href="#">Best Sellers</a></li>
-                    <li><a href="#">Deals</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="#" data-link="new-arrivals">New Arrivals</a></li>
+                    <li><a href="#" data-link="best-sellers">Best Sellers</a></li>
+                    <li><a href="#" data-link="deals">Deals</a></li>
+                    <li><a href="#" data-link="about">About Us</a></li>
+                    <li><a href="#" data-link="contact">Contact</a></li>
                 </ul>
             </div>
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Discover Your Natural Beauty</h1>
-            <p>Premium beauty products that enhance your natural glow and confidence</p>
-            <a href="#products" class="btn">Shop Now</a>
-            <a href="#" class="btn btn-outline">Learn More</a>
-        </div>
-    </section>
+    <!-- Main Content Container for SPA feel -->
+    <main id="mainContent">
+        <!-- Hero Section (Home) -->
+        <section id="homeSection" class="hero">
+            <div class="hero-content">
+                <h1>Discover Your Natural Beauty</h1>
+                <p>Premium beauty products that enhance your natural glow and confidence</p>
+                <a href="#products" class="btn" onclick="renderProducts('all'); document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">Shop Now</a>
+                <a href="#" class="btn btn-outline" onclick="navigateTo('about')">Learn More</a>
+            </div>
+        </section>
 
-    <!-- Categories Section -->
-    <section class="categories">
-        <div class="container">
-            <h2 class="section-title">Shop by Category</h2>
-            <div class="category-grid" id="categoryGrid">
-                <!-- Categories will be dynamically loaded here -->
+        <!-- Categories Section -->
+        <section class="categories">
+            <div class="container">
+                <h2 class="section-title">Shop by Category</h2>
+                <div class="category-grid" id="categoryGrid">
+                    <!-- Categories will be dynamically loaded here -->
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Products Section -->
-    <section class="products" id="products">
-        <div class="container">
-            <h2 class="section-title">Featured Products</h2>
-            <div class="filter-tabs">
-                <div class="filter-tab active" data-filter="all">All Products</div>
-                <div class="filter-tab" data-filter="skincare">Skincare</div>
-                <div class="filter-tab" data-filter="makeup">Makeup</div>
-                <div class="filter-tab" data-filter="haircare">Haircare</div>
-                <div class="filter-tab" data-filter="fragrance">Fragrance</div>
-                <div class="filter-tab" data-filter="tools">Beauty Tools</div>
+        <!-- Products Section -->
+        <section class="products" id="productsSection">
+            <div class="container">
+                <h2 class="section-title" id="productSectionTitle">Featured Products</h2>
+                <div class="filter-tabs">
+                    <div class="filter-tab active" data-filter="all">All Products</div>
+                    <div class="filter-tab" data-filter="skincare">Skincare</div>
+                    <div class="filter-tab" data-filter="makeup">Makeup</div>
+                    <div class="filter-tab" data-filter="haircare">Haircare</div>
+                    <div class="filter-tab" data-filter="fragrance">Fragrance</div>
+                    <div class="filter-tab" data-filter="tools">Beauty Tools</div>
+                </div>
+                <div class="product-grid" id="productGrid">
+                    <!-- Products will be dynamically loaded here -->
+                </div>
             </div>
-            <div class="product-grid" id="productGrid">
-                <!-- Products will be dynamically loaded here -->
+        </section>
+        
+        <!-- About Us Section (Dynamic) -->
+        <section id="aboutSection" class="content-section white-bg" style="display:none;">
+            <div class="container">
+                <h2 class="section-title">About Us</h2>
+                <div class="content-wrapper" id="aboutContent">
+                    <!-- Content loaded from Admin -->
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Contact Section (Dynamic) -->
+        <section id="contactSection" class="content-section gray-bg" style="display:none;">
+            <div class="container">
+                <h2 class="section-title">Contact Us</h2>
+                <div class="content-wrapper" id="contactContent">
+                    <!-- Content loaded from Admin -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Deals Section (Dynamic) -->
+        <section id="dealsSection" class="products" style="display:none; background-color: #fff0f5;">
+            <div class="container">
+                <h2 class="section-title" style="color: var(--primary-color);">Hot Deals</h2>
+                <div class="product-grid" id="dealsGrid">
+                    <!-- Deals loaded dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Newsletter Section -->
     <section class="newsletter">
@@ -1546,8 +1551,8 @@
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#" onclick="navigateTo('about')">About Us</a></li>
+                        <li><a href="#" onclick="navigateTo('contact')">Contact Us</a></li>
                         <li><a href="#">FAQs</a></li>
                         <li><a href="#">Shipping & Returns</a></li>
                         <li><a href="#">Terms & Conditions</a></li>
@@ -1659,12 +1664,12 @@
                 <li><a href="#" data-section="dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="#" data-section="products"><i class="fas fa-box"></i> Products</a></li>
                 <li><a href="#" data-section="categories"><i class="fas fa-tags"></i> Categories</a></li>
+                <li><a href="#" data-section="pages"><i class="fas fa-file-alt"></i> Pages & Content</a></li>
                 <li><a href="#" data-section="orders"><i class="fas fa-shopping-bag"></i> Orders</a></li>
                 <li><a href="#" data-section="customers"><i class="fas fa-users"></i> Customers</a></li>
                 <li><a href="#" data-section="stock"><i class="fas fa-warehouse"></i> Stock</a></li>
                 <li><a href="#" data-section="finance"><i class="fas fa-dollar-sign"></i> Finance</a></li>
                 <li><a href="#" data-section="accounts"><i class="fas fa-user-cog"></i> Accounts</a></li>
-                <li><a href="#" data-section="statistics"><i class="fas fa-chart-bar"></i> Statistics</a></li>
             </ul>
         </div>
         <div class="admin-content">
@@ -1726,7 +1731,6 @@
                                 <label for="productCategory">Category</label>
                                 <select id="productCategory" required>
                                     <option value="">Select Category</option>
-                                    <!-- Categories will be dynamically loaded here -->
                                 </select>
                             </div>
                         </div>
@@ -1742,8 +1746,9 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="productImage">Image URL</label>
-                                <input type="text" id="productImage">
+                                <label for="productImageUpload">Product Image</label>
+                                <input type="file" id="productImageUpload" accept="image/*">
+                                <small style="color: #666; display: block; margin-top: 5px;">Upload an image from your device.</small>
                             </div>
                             <div class="form-group">
                                 <label for="productBadge">Badge</label>
@@ -1817,6 +1822,27 @@
                         <i class="fas fa-tags"></i>
                         <p>No categories yet</p>
                     </div>
+                </div>
+            </div>
+
+            <!-- Pages Section (About, Contact, New Arrivals, Deals) -->
+            <div class="admin-section" id="pages">
+                <div class="form-container">
+                    <h3>Manage Page Content</h3>
+                    <div class="form-group">
+                        <label for="pageSelect">Select Page to Edit</label>
+                        <select id="pageSelect" onchange="loadPageContent()">
+                            <option value="about">About Us</option>
+                            <option value="contact">Contact</option>
+                            <option value="new-arrivals">New Arrivals Banner</option>
+                            <option value="deals">Deals Banner</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pageContentInput">Content (HTML allowed)</label>
+                        <textarea id="pageContentInput" rows="10"></textarea>
+                    </div>
+                    <button type="button" class="btn-submit" onclick="savePageContent()">Save Page Content</button>
                 </div>
             </div>
 
@@ -1896,25 +1922,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Statistics Section -->
-            <div class="admin-section" id="statistics">
-                <div class="chart-container">
-                    <div class="chart-placeholder">
-                        <p>Sales Statistics (Placeholder)</p>
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <div class="chart-placeholder">
-                        <p>Product Performance (Placeholder)</p>
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <div class="chart-placeholder">
-                        <p>Customer Demographics (Placeholder)</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1941,6 +1948,16 @@
                 ];
                 localStorage.setItem('beautyaura_accounts', JSON.stringify(defaultAccounts));
             }
+            // Initialize Page Content
+            if (!localStorage.getItem('beautyaura_pages')) {
+                const defaultPages = {
+                    'about': '<h3>Welcome to BeautyAura</h3><p>We are committed to providing premium beauty products that enhance your natural beauty and boost your confidence. Located in Kasarani, Nairobi.</p>',
+                    'contact': '<h3>Get in Touch</h3><p>Location: Kasarani, Nairobi</p><p>Phone: +254-712-345-678</p><p>Email: info@beautyaura.com</p>',
+                    'new-arrivals': '<h2>Just Dropped!</h2><p>Check out our latest collection.</p>',
+                    'deals': '<h2>Massive Discounts!</h2><p>Save big on selected items.</p>'
+                };
+                localStorage.setItem('beautyaura_pages', JSON.stringify(defaultPages));
+            }
         }
 
         // Get data from localStorage
@@ -1953,8 +1970,19 @@
             localStorage.setItem(key, JSON.stringify(data));
         }
 
+        // Image Helper: Convert file to Base64
+        function convertImageToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
         // DOM elements
         const productGrid = document.getElementById('productGrid');
+        const dealsGrid = document.getElementById('dealsGrid');
         const categoryGrid = document.getElementById('categoryGrid');
         const cartToggle = document.getElementById('cartToggle');
         const cartSidebar = document.getElementById('cartSidebar');
@@ -1990,12 +2018,11 @@
             initializeLocalStorage();
             renderCategories();
             renderProducts('all');
+            loadPageContentToFrontEnd(); // Load About/Contact content
             setupEventListeners();
             updateFooterYear();
             initializeAdminData();
             setupIconSelector();
-            
-            // Immediately sync the dropdown on load
             populateCategoryDropdown();
         }
 
@@ -2011,17 +2038,11 @@
             
             iconOptions.forEach(option => {
                 option.addEventListener('click', () => {
-                    // Remove selected class from all options
                     iconOptions.forEach(opt => opt.classList.remove('selected'));
-                    
-                    // Add selected class to clicked option
                     option.classList.add('selected');
-                    
-                    // Update selected icon
                     selectedIcon = option.dataset.icon;
                     categoryIconInput.value = selectedIcon;
                     
-                    // Update display
                     selectedIconDisplay.innerHTML = `
                         <i class="${selectedIcon}"></i>
                         <span>${selectedIcon}</span>
@@ -2030,7 +2051,56 @@
             });
         }
 
-        // Render categories
+        // Navigation Logic
+        function navigateTo(page) {
+            // Hide all sections except main nav and footer
+            const about = document.getElementById('aboutSection');
+            const contact = document.getElementById('contactSection');
+            const deals = document.getElementById('dealsSection');
+            const home = document.getElementById('homeSection');
+            const products = document.getElementById('productsSection');
+            const categories = document.querySelector('.categories'); // The categories grid section
+
+            // Reset display
+            about.style.display = 'none';
+            contact.style.display = 'none';
+            deals.style.display = 'none';
+            home.style.display = 'none'; // Hide Hero initially if navigating away
+            products.style.display = 'none';
+            categories.style.display = 'none';
+
+            // Show relevant section
+            if (page === 'about') {
+                about.style.display = 'block';
+            } else if (page === 'contact') {
+                contact.style.display = 'block';
+            } else if (page === 'deals') {
+                deals.style.display = 'block';
+                renderDeals(); // Render products with 'Sale' badge
+            } else if (page === 'new-arrivals') {
+                // Treat New Arrivals as a filtered view
+                products.style.display = 'block';
+                document.getElementById('productSectionTitle').textContent = 'New Arrivals';
+                renderProductsByBadge('New');
+            } else if (page === 'best-sellers') {
+                // Treat Best Sellers as a filtered view based on stats
+                products.style.display = 'block';
+                document.getElementById('productSectionTitle').textContent = 'Best Sellers';
+                renderBestSellers();
+            } else {
+                // Home
+                home.style.display = 'block';
+                categories.style.display = 'block';
+                products.style.display = 'block';
+                document.getElementById('productSectionTitle').textContent = 'Featured Products';
+                renderProducts('all');
+            }
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Categories
         function renderCategories() {
             const categories = getLocalStorageData('beautyaura_categories');
             categoryGrid.innerHTML = '';
@@ -2056,16 +2126,15 @@
             // Add event listeners to category cards
             document.querySelectorAll('.category-card').forEach(card => {
                 card.addEventListener('click', () => {
+                    navigateTo('shop'); // Switch to shop view
                     const category = card.dataset.category;
                     document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
                     const tab = document.querySelector(`.filter-tab[data-filter="${category}"]`);
                     if (tab) {
                         tab.classList.add('active');
                         renderProducts(category);
-                        document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+                        document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
                     } else {
-                        // If the filter tab doesn't exist (custom category), just show all or filter via logic
-                        // For this implementation, we will just show products filtered by name directly
                         document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
                         document.querySelector('.filter-tab[data-filter="all"]').classList.add('active');
                         renderProductsDirectly(category);
@@ -2074,73 +2143,114 @@
             });
         }
 
-        // Helper to render products by category name directly if tab doesn't exist
-        function renderProductsDirectly(categoryName) {
-            const products = getLocalStorageData('beautyaura_products');
-            const filteredProducts = products.filter(product => product.category === categoryName);
-            productGrid.innerHTML = '';
-            
-            if (filteredProducts.length === 0) {
-                productGrid.innerHTML = '<div class="empty-state"><p>No products available in this category</p></div>';
-                return;
-            }
-            
-            filteredProducts.forEach(product => {
-                createProductCard(product);
-            });
-        }
-
-        // Render products
+        // Render Products (All or Category)
         function renderProducts(category) {
             const products = getLocalStorageData('beautyaura_products');
             const filteredProducts = category === 'all' 
                 ? products 
                 : products.filter(product => product.category === category);
             
+            displayProductGrid(filteredProducts);
+        }
+
+        function renderProductsDirectly(categoryName) {
+            const products = getLocalStorageData('beautyaura_products');
+            const filteredProducts = products.filter(product => product.category === categoryName);
+            displayProductGrid(filteredProducts);
+        }
+
+        function renderProductsByBadge(badge) {
+            const products = getLocalStorageData('beautyaura_products');
+            const filteredProducts = products.filter(p => p.badge === badge);
+            displayProductGrid(filteredProducts);
+        }
+
+        function renderDeals() {
+            // Deals are products with 'Sale' badge
+            renderProductsByBadge('Sale');
+        }
+
+        // Render Best Sellers (Logic: Count quantities sold in orders)
+        function renderBestSellers() {
+            const products = getLocalStorageData('beautyaura_products');
+            const orders = getLocalStorageData('beautyaura_orders');
+
+            // Calculate sales count per product
+            const salesCounts = {};
+            
+            orders.forEach(order => {
+                order.items.forEach(item => {
+                    if (salesCounts[item.productId]) {
+                        salesCounts[item.productId] += item.quantity;
+                    } else {
+                        salesCounts[item.productId] = item.quantity;
+                    }
+                });
+            });
+
+            // Sort products by sales count (descending)
+            const sortedProducts = [...products].sort((a, b) => {
+                const countA = salesCounts[a.id] || 0;
+                const countB = salesCounts[b.id] || 0;
+                return countB - countA;
+            });
+
+            displayProductGrid(sortedProducts);
+        }
+
+        function displayProductGrid(products) {
             productGrid.innerHTML = '';
             
-            if (filteredProducts.length === 0) {
+            if (products.length === 0) {
                 productGrid.innerHTML = '<div class="empty-state"><p>No products available</p></div>';
                 return;
             }
             
-            filteredProducts.forEach(product => {
-                createProductCard(product);
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-img">
+                        <img src="${product.image}" alt="${product.name}">
+                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                        <div class="product-actions">
+                            <button class="action-btn" data-id="${product.id}" data-action="quickview">
+                                <i class="far fa-eye"></i>
+                            </button>
+                            <button class="action-btn" data-id="${product.id}" data-action="wishlist">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="action-btn" data-id="${product.id}" data-action="addtocart">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">
+                            <div>
+                                <span class="price">KSh ${product.price}</span>
+                                ${product.oldPrice ? `<span class="old-price">KSh ${product.oldPrice}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(productCard);
+            });
+
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', handleProductAction);
             });
         }
         
-        // Separate function to create card HTML for reuse
-        function createProductCard(product) {
-            const productCard = document.createElement('div');
-            productCard.className = 'product-card';
-            productCard.innerHTML = `
-                <div class="product-img">
-                    <img src="${product.image}" alt="${product.name}">
-                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-                    <div class="product-actions">
-                        <button class="action-btn" data-id="${product.id}" data-action="quickview">
-                            <i class="far fa-eye"></i>
-                        </button>
-                        <button class="action-btn" data-id="${product.id}" data-action="wishlist">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <button class="action-btn" data-id="${product.id}" data-action="addtocart">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">${product.category}</div>
-                    <div class="product-name">${product.name}</div>
-                    <div class="product-price">
-                        <div>
-                            <span class="price">KSh ${product.price}</span>
-                            ${product.oldPrice ? `<span class="old-price">KSh ${product.oldPrice}</span>` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-            productGrid.appendChild(productCard);
+        // Page Content Management (Front End)
+        function loadPageContentToFrontEnd() {
+            const pages = getLocalStorageData('beautyaura_pages');
+            if (pages) {
+                if (pages['about']) document.getElementById('aboutContent').innerHTML = pages['about'];
+                if (pages['contact']) document.getElementById('contactContent').innerHTML = pages['contact'];
+            }
         }
 
         // Handle product actions
@@ -2179,11 +2289,9 @@
 
         // Update cart
         function updateCart() {
-            // Update cart count
             const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
             cartCount.textContent = totalItems;
             
-            // Update cart items
             if (cart.length === 0) {
                 cartItems.innerHTML = `
                     <div class="cart-empty">
@@ -2214,18 +2322,15 @@
                     cartItems.appendChild(cartItem);
                 });
                 
-                // Add event listeners to quantity buttons
                 document.querySelectorAll('.quantity-btn').forEach(btn => {
                     btn.addEventListener('click', updateQuantity);
                 });
                 
-                // Add event listeners to remove buttons
                 document.querySelectorAll('.cart-item-remove').forEach(btn => {
                     btn.addEventListener('click', removeFromCart);
                 });
             }
             
-            // Update cart total with delivery
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const deliveryOption = document.querySelector('input[name="delivery"]:checked').value;
             let deliveryFee = 0;
@@ -2287,7 +2392,6 @@
             const products = getLocalStorageData('beautyaura_products');
             const product = products.find(p => p.id === id);
             showToast(`Quick view: ${product.name}`);
-            // In a real application, this would open a modal with product details
         }
 
         // Show toast notification
@@ -2311,9 +2415,6 @@
             updateStockList();
             updateFinanceStats();
             updateAccountList();
-            updateTransactionList();
-            updateRecentOrders();
-            // Initial population of dropdown is handled in init()
         }
 
         // Update dashboard stats
@@ -2351,6 +2452,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>Category</th>
                         <th>Price</th>
@@ -2366,6 +2468,7 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${product.id}</td>
+                    <td><img src="${product.image}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
                     <td>${product.name}</td>
                     <td>${product.category}</td>
                     <td>KSh ${product.price}</td>
@@ -2611,7 +2714,6 @@
             stockListContainer.innerHTML = '';
             stockListContainer.appendChild(table);
             
-            // Add event listeners to action buttons
             document.querySelectorAll('#stockListContainer .btn-edit').forEach(btn => {
                 btn.addEventListener('click', editProductStock);
             });
@@ -2680,106 +2782,11 @@
             accountListContainer.appendChild(table);
         }
 
-        // Update transaction list
-        function updateTransactionList() {
-            const orders = getLocalStorageData('beautyaura_orders');
-            const transactionListContainer = document.getElementById('transactionListContainer');
-            
-            if (orders.length === 0) {
-                transactionListContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-receipt"></i>
-                        <p>No transactions yet</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const table = document.createElement('table');
-            table.className = 'data-table';
-            table.innerHTML = `
-                <thead>
-                    <tr>
-                        <th>Transaction ID</th>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            `;
-            
-            const tbody = table.querySelector('tbody');
-            orders.forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.id}</td>
-                    <td>${order.date}</td>
-                    <td>Sale</td>
-                    <td>KSh ${order.total.toFixed(2)}</td>
-                    <td>${order.status}</td>
-                `;
-                tbody.appendChild(row);
-            });
-            
-            transactionListContainer.innerHTML = '';
-            transactionListContainer.appendChild(table);
-        }
-
-        // Update recent orders
-        function updateRecentOrders() {
-            const orders = getLocalStorageData('beautyaura_orders');
-            const recentOrdersContainer = document.getElementById('recentOrdersContainer');
-            
-            if (orders.length === 0) {
-                recentOrdersContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-shopping-bag"></i>
-                        <p>No orders yet</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const table = document.createElement('table');
-            table.className = 'data-table';
-            table.innerHTML = `
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Date</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            `;
-            
-            const tbody = table.querySelector('tbody');
-            orders.slice(0, 5).forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.id}</td>
-                    <td>${order.customer}</td>
-                    <td>${order.date}</td>
-                    <td>KSh ${order.total.toFixed(2)}</td>
-                    <td>${order.status}</td>
-                `;
-                tbody.appendChild(row);
-            });
-            
-            recentOrdersContainer.innerHTML = '';
-            recentOrdersContainer.appendChild(table);
-        }
-
         // Populate category dropdown
         function populateCategoryDropdown() {
             const categories = getLocalStorageData('beautyaura_categories');
             const productCategory = document.getElementById('productCategory');
             
-            // Save the currently selected value if it exists
             const currentSelection = productCategory.value;
             
             productCategory.innerHTML = '<option value="">Select Category</option>';
@@ -2791,7 +2798,6 @@
                 productCategory.appendChild(option);
             });
             
-            // Restore selection if it still exists in the new list
             if (currentSelection) {
                 const exists = Array.from(productCategory.options).some(option => option.value === currentSelection);
                 if (exists) {
@@ -2818,7 +2824,6 @@
             const product = products.find(p => p.id === id);
             
             if (product) {
-                // Ensure dropdown is up to date before setting value
                 populateCategoryDropdown();
                 
                 document.getElementById('productId').value = product.id;
@@ -2826,14 +2831,14 @@
                 document.getElementById('productCategory').value = product.category;
                 document.getElementById('productPrice').value = product.price;
                 document.getElementById('productStock').value = product.stock;
-                document.getElementById('productImage').value = product.image;
+                // Don't reset the file input on edit, as we can't repopulate it for security/privacy reasons
+                // The existing image will remain if no new file is selected
                 document.getElementById('productBadge').value = product.badge || '';
                 document.getElementById('productDescription').value = product.description || '';
                 
                 document.getElementById('productFormTitle').textContent = 'Edit Product';
                 document.getElementById('productSubmitBtn').textContent = 'Update Product';
                 
-                // Scroll to form
                 document.getElementById('productForm').scrollIntoView({ behavior: 'smooth' });
             }
         }
@@ -2899,13 +2904,11 @@
                 categoryIconInput.value = category.icon;
                 selectedIcon = category.icon;
                 
-                // Update icon display
                 selectedIconDisplay.innerHTML = `
                     <i class="${category.icon}"></i>
                     <span>${category.icon}</span>
                 `;
                 
-                // Update icon selector
                 document.querySelectorAll('.icon-option').forEach(opt => {
                     opt.classList.remove('selected');
                     if (opt.dataset.icon === category.icon) {
@@ -2916,7 +2919,6 @@
                 document.getElementById('categoryFormTitle').textContent = 'Edit Category';
                 document.getElementById('categorySubmitBtn').textContent = 'Update Category';
                 
-                // Scroll to form
                 document.getElementById('categoryForm').scrollIntoView({ behavior: 'smooth' });
             }
         }
@@ -2932,7 +2934,6 @@
                 
                 updateCategoryList();
                 renderCategories();
-                // Sync dropdown
                 populateCategoryDropdown();
                 showToast('Category deleted successfully');
             }
@@ -2952,6 +2953,28 @@
                 
                 alert(`Order Details:\n\nOrder ID: ${order.id}\nCustomer: ${order.customer}\nDate: ${order.date}\nStatus: ${order.status}\n\nItems:\n${itemsText}\n\nTotal: KSh ${order.total.toFixed(2)}`);
             }
+        }
+
+        // Admin Page Management
+        function loadPageContent() {
+            const page = document.getElementById('pageSelect').value;
+            const pages = getLocalStorageData('beautyaura_pages');
+            if (pages && pages[page]) {
+                document.getElementById('pageContentInput').value = pages[page];
+            }
+        }
+
+        function savePageContent() {
+            const page = document.getElementById('pageSelect').value;
+            const content = document.getElementById('pageContentInput').value;
+            let pages = getLocalStorageData('beautyaura_pages');
+            if (!pages) pages = {};
+            pages[page] = content;
+            saveLocalStorageData('beautyaura_pages', pages);
+            
+            // Update Front End
+            loadPageContentToFrontEnd();
+            showToast('Page content updated successfully');
         }
 
         // Setup event listeners
@@ -2975,6 +2998,17 @@
                 navMenu.classList.toggle('active');
             });
             
+            // Navigation Links
+            document.querySelectorAll('.nav-menu a[data-link]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = link.dataset.link;
+                    navigateTo(target);
+                    // Close mobile menu if open
+                    navMenu.classList.remove('active');
+                });
+            });
+
             // Filter tabs
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -2994,8 +3028,9 @@
                         const tab = document.querySelector(`.filter-tab[data-filter="${category}"]`);
                         if (tab) {
                             tab.classList.add('active');
+                            navigateTo('shop'); // Ensure shop view is active
                             renderProducts(category);
-                            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+                            document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
                         }
                     }
                 });
@@ -3020,17 +3055,40 @@
                     );
                     
                     if (filteredProducts.length > 0) {
+                        navigateTo('shop');
                         productGrid.innerHTML = '';
                         filteredProducts.forEach(product => {
-                            createProductCard(product);
+                             const productCard = document.createElement('div');
+                            productCard.className = 'product-card';
+                            productCard.innerHTML = `
+                                <div class="product-img">
+                                    <img src="${product.image}" alt="${product.name}">
+                                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                                    <div class="product-actions">
+                                        <button class="action-btn" data-id="${product.id}" data-action="quickview"><i class="far fa-eye"></i></button>
+                                        <button class="action-btn" data-id="${product.id}" data-action="wishlist"><i class="far fa-heart"></i></button>
+                                        <button class="action-btn" data-id="${product.id}" data-action="addtocart"><i class="fas fa-shopping-cart"></i></button>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <div class="product-category">${product.category}</div>
+                                    <div class="product-name">${product.name}</div>
+                                    <div class="product-price">
+                                        <div>
+                                            <span class="price">KSh ${product.price}</span>
+                                            ${product.oldPrice ? `<span class="old-price">KSh ${product.oldPrice}</span>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            productGrid.appendChild(productCard);
                         });
                         
-                        // Add event listeners to product action buttons
                         document.querySelectorAll('.action-btn').forEach(btn => {
                             btn.addEventListener('click', handleProductAction);
                         });
                         
-                        document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+                        document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
                         showToast(`Found ${filteredProducts.length} products for "${searchTerm}"`);
                     } else {
                         showToast(`No products found for "${searchTerm}"`, true);
@@ -3054,7 +3112,6 @@
             // Checkout button
             checkoutBtn.addEventListener('click', () => {
                 if (cart.length > 0) {
-                    // Create a new order
                     const orders = getLocalStorageData('beautyaura_orders');
                     const customers = getLocalStorageData('beautyaura_customers');
                     const products = getLocalStorageData('beautyaura_products');
@@ -3092,7 +3149,6 @@
                     orders.push(newOrder);
                     saveLocalStorageData('beautyaura_orders', orders);
                     
-                    // Update stock
                     cart.forEach(cartItem => {
                         const product = products.find(p => p.id === cartItem.id);
                         if (product) {
@@ -3101,7 +3157,6 @@
                     });
                     saveLocalStorageData('beautyaura_products', products);
                     
-                    // Update or add customer
                     let customer = customers.find(c => c.email === "guest@beautyaura.com");
                     if (!customer) {
                         customer = {
@@ -3119,18 +3174,14 @@
                     customer.totalSpent += total;
                     saveLocalStorageData('beautyaura_customers', customers);
                     
-                    // Clear cart
                     cart = [];
                     updateCart();
                     closeCart();
                     
-                    // Update admin data
                     updateDashboardStats();
                     updateOrderList();
                     updateStockList();
-                    updateRecentOrders();
                     updateFinanceStats();
-                    updateTransactionList();
                     
                     showToast('Order placed successfully!');
                 } else {
@@ -3152,14 +3203,13 @@
                 const username = document.getElementById('username').value;
                 const password = document.getElementById('password').value;
                 
-                // Simple authentication (in a real app, this would be server-side)
                 if (username === 'admin' && password === 'admin123') {
                     adminLogin.classList.remove('active');
                     adminDashboard.classList.add('active');
                     showToast('Login successful!');
-                    // Refresh data on login
                     initializeAdminData();
                     populateCategoryDropdown();
+                    loadPageContent(); // Load page content for admin
                 } else {
                     showToast('Invalid username or password', true);
                 }
@@ -3178,47 +3228,61 @@
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     
-                    // Update active nav
                     document.querySelectorAll('.admin-nav a').forEach(l => l.classList.remove('active'));
                     link.classList.add('active');
                     
-                    // Show corresponding section
                     const sectionId = link.dataset.section;
                     document.querySelectorAll('.admin-section').forEach(section => {
                         section.classList.remove('active');
                     });
                     document.getElementById(sectionId).classList.add('active');
                     
-                    // Update section title
                     document.getElementById('sectionTitle').textContent = link.textContent.trim();
                 });
             });
             
             // Product form
-            document.getElementById('productForm').addEventListener('submit', (e) => {
+            document.getElementById('productForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
                 const productId = document.getElementById('productId').value;
                 const products = getLocalStorageData('beautyaura_products');
                 const category = document.getElementById('productCategory').value;
+                const imageFile = document.getElementById('productImageUpload').files[0];
                 
-                // Validation: Ensure category is selected
                 if (!category) {
                     showToast('Please select a category for the product', true);
-                    // Highlight the category dropdown
                     document.getElementById('productCategory').focus();
                     return;
                 }
+
+                let imageUrl = 'https://picsum.photos/seed/default/300/300.jpg'; // Fallback
+
+                // Handle Image Upload (Conversion to Base64)
+                if (imageFile) {
+                    try {
+                        imageUrl = await convertImageToBase64(imageFile);
+                    } catch (error) {
+                        console.error("Error converting image:", error);
+                        showToast('Error processing image', true);
+                        return;
+                    }
+                } else if (productId) {
+                    // If editing and no new image provided, keep the old image
+                    const existingProduct = products.find(p => p.id === parseInt(productId));
+                    if (existingProduct) {
+                        imageUrl = existingProduct.image;
+                    }
+                }
                 
                 if (productId) {
-                    // Update existing product
                     const product = products.find(p => p.id === parseInt(productId));
                     if (product) {
                         product.name = document.getElementById('productName').value;
                         product.category = category;
                         product.price = parseFloat(document.getElementById('productPrice').value);
                         product.stock = parseInt(document.getElementById('productStock').value);
-                        product.image = document.getElementById('productImage').value || `https://picsum.photos/seed/product${product.id}/300/300.jpg`;
+                        product.image = imageUrl;
                         product.badge = document.getElementById('productBadge').value;
                         product.description = document.getElementById('productDescription').value;
                         
@@ -3226,14 +3290,13 @@
                         showToast('Product updated successfully!');
                     }
                 } else {
-                    // Add new product
                     const newProduct = {
                         id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
                         name: document.getElementById('productName').value,
                         category: category,
                         price: parseFloat(document.getElementById('productPrice').value),
                         stock: parseInt(document.getElementById('productStock').value),
-                        image: document.getElementById('productImage').value || `https://picsum.photos/seed/product${products.length + 1}/300/300.jpg`,
+                        image: imageUrl,
                         badge: document.getElementById('productBadge').value,
                         description: document.getElementById('productDescription').value
                     };
@@ -3243,20 +3306,17 @@
                     showToast('Product added successfully!');
                 }
                 
-                // Reset form and update UI
                 document.getElementById('productForm').reset();
                 document.getElementById('productId').value = '';
                 document.getElementById('productFormTitle').textContent = 'Add New Product';
                 document.getElementById('productSubmitBtn').textContent = 'Add Product';
                 
-                // Refresh Product List and Client View
                 updateProductList();
                 updateDashboardStats();
                 updateStockList();
                 renderProducts('all');
             });
             
-            // Cancel product form
             document.getElementById('cancelProduct').addEventListener('click', () => {
                 document.getElementById('productForm').reset();
                 document.getElementById('productId').value = '';
@@ -3277,7 +3337,6 @@
                 const categories = getLocalStorageData('beautyaura_categories');
                 
                 if (categoryId) {
-                    // Update existing category
                     const category = categories.find(c => c.id === parseInt(categoryId));
                     if (category) {
                         category.name = document.getElementById('categoryName').value;
@@ -3287,7 +3346,6 @@
                         showToast('Category updated successfully!');
                     }
                 } else {
-                    // Add new category
                     const newCategory = {
                         id: categories.length > 0 ? Math.max(...categories.map(c => c.id)) + 1 : 1,
                         name: document.getElementById('categoryName').value,
@@ -3299,7 +3357,6 @@
                     showToast('Category added successfully!');
                 }
                 
-                // Reset form and update UI
                 document.getElementById('categoryForm').reset();
                 document.getElementById('categoryId').value = '';
                 document.getElementById('categoryFormTitle').textContent = 'Add New Category';
@@ -3313,13 +3370,11 @@
                     opt.classList.remove('selected');
                 });
                 
-                // Sync everything
                 updateCategoryList();
                 renderCategories();
                 populateCategoryDropdown();
             });
             
-            // Cancel category form
             document.getElementById('cancelCategory').addEventListener('click', () => {
                 document.getElementById('categoryForm').reset();
                 document.getElementById('categoryId').value = '';
@@ -3336,7 +3391,6 @@
             });
         }
 
-        // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
